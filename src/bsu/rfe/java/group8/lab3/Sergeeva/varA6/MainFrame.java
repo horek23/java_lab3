@@ -62,6 +62,21 @@ public class MainFrame extends JFrame {
         menuBar.add(fileMenu);
         JMenu tableMenu = new JMenu("Таблица");
         menuBar.add(tableMenu);
+        JMenu helpMenu = new JMenu("Справка");
+        menuBar.add(helpMenu);
+
+        Action aboutAction = new AbstractAction("О программе") {
+            public void actionPerformed(ActionEvent event) {
+                JOptionPane.showMessageDialog(
+                        MainFrame.this,
+                        "Автор: Сергеева Алина\nГруппа: 8",
+                        "О программе",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            }
+        };
+
+        helpMenu.add(aboutAction);
 
         Action saveToTextAction = new AbstractAction("Сохранить в текстовый файл") {
         public void actionPerformed(ActionEvent event) {
