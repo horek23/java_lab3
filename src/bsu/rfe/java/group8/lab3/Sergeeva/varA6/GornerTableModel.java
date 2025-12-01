@@ -26,7 +26,7 @@ public class GornerTableModel extends AbstractTableModel {
         return step;
     }
     public int getColumnCount() {
-        return 2;
+        return 3;
     }
     public int getRowCount() {
         return  (int) Math.ceil((to-from)/step) + 1;
@@ -34,27 +34,36 @@ public class GornerTableModel extends AbstractTableModel {
 
     public Object getValueAt(int row, int col) {            // возвращает содержимое ячейки таблицы
         double x = from + step*row;
+
+        Double result = coefficients[0];
+        for (int i = 1; i < coefficients.length; i++) {   // типо перфый коэффициент мы (допустим) 6 раз умножим на х, 2 - на 5 и тд
+            result = result * x + coefficients[i];
+        }
+
         if (col==0) {
             return x;
-        } else {
-            Double result = coefficients[0];
-            for (int i = 1; i < coefficients.length; i++) {   // типо перфый коэффициент мы (допустим) 6 раз умножим на х, 2 - на 5 и тд
-                result = result * x + coefficients[i];
-            }
+        } else if (col==1) {
             return result;
+        } else {
+            double nearestInt = Math.round(result);               //округляет до ближайшего целого
+            return Math.abs(result - nearestInt) <= 0.1;
         }
-    }
+        }
+
 
     public String getColumnName(int col) {
         switch (col) {
-            case 0:
-                return "Значение X";
-            default:
-                return "Значение многочлена";
+            case 0: return "Значение х";
+            case 1: return "Значение многочлена";
+            case 2: return "Близко к целому";
+            default: return "";
         }
     }
 
     public Class<?> getColumnClass(int col) {
-        return Double.class;
+        if (col == 2)
+            return Boolean.class;
+        else
+            return Double.class;
     }
 }
